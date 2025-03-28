@@ -1,0 +1,23 @@
+<table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Match Score</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let application of jobApplications">
+        <td>{{ application.fullName }}</td>
+        <td>{{ application.email }}</td>
+        <td>{{ application.status }}</td>
+        <td>{{ application.matchPercentage | number:'1.0-2' }}%</td>
+        <td>
+         
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  

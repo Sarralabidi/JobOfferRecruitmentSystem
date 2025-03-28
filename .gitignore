@@ -1,0 +1,14 @@
+# Ignore Node.js dependencies (Angular)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# Ignore Java dependencies (Spring Boot)
+backend/target/
+backend/.mvn/
+backend/.idea/
+
+# Ignore system-generated files
+*.log
+*.env
+.DS_Store

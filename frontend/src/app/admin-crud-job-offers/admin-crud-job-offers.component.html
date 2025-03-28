@@ -1,0 +1,106 @@
+<div class="admin-container">
+  <h2>Job Offers</h2>
+
+  <!-- Job Offers Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Company</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let jobOffer of jobOffers">
+        <td>{{ jobOffer.title }}</td>
+        <td>{{ jobOffer.description }}</td>
+        <td>{{ jobOffer.company }}</td>
+        <td>{{ jobOffer.location }}</td>
+        <td>{{ jobOffer.status }}</td>
+        <td>
+          <button (click)="editJobOffer(jobOffer)">Edit</button>
+          <button (click)="deleteJobOffer(jobOffer.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button (click)="toggleAddForm()" class="btn-add">➕ Add Job Offer</button>
+
+  <!-- Add Job Offer Form -->
+  <div *ngIf="addingJobOffer" class="job-form">
+    <h3>Add Job Offer</h3>
+    <form [formGroup]="jobForm" (ngSubmit)="addJobOffer()">
+      <label>Title</label>
+      <input type="text" class="form-control" formControlName="title" placeholder="Title">
+      <div *ngIf="jobForm.controls['title'].invalid && jobForm.controls['title'].touched" class="alert alert-danger">
+        <p *ngIf="jobForm.controls['title'].hasError('required')">Title is required</p>
+        <p *ngIf="jobForm.controls['title'].hasError('minlength')">Must be at least 4 characters</p>
+      </div>
+
+      <label>Description</label>
+      <input type="text" class="form-control" formControlName="description" placeholder="Description">
+      <div *ngIf="jobForm.controls['description'].invalid && jobForm.controls['description'].touched" class="alert alert-danger">
+        <p *ngIf="jobForm.controls['description'].hasError('required')">Description is required</p>
+      </div>
+
+      <label>Location</label>
+      <select class="form-control" formControlName="location">
+        <option value="" disabled>Select Location</option>
+        <option value="Remote">Remote</option>
+        <option value="On-site">On-site</option>
+        <option value="Hybrid">Hybrid</option>
+      </select>
+      <div *ngIf="jobForm.controls['location'].invalid && jobForm.controls['location'].touched" class="alert alert-danger">
+        <p>Location is required</p>
+      </div>
+
+      <label>Status</label>
+      <select class="form-control" formControlName="status">
+        <option value="Open">Open</option>
+        <option value="Closed">Closed</option>
+      </select>
+
+      <label>Keywords</label>
+      <input type="text" class="form-control" formControlName="keywords" placeholder="Keywords">
+      <div *ngIf="jobForm.controls['keywords'].invalid && jobForm.controls['keywords'].touched" class="alert alert-danger">
+        <p *ngIf="jobForm.controls['keywords'].hasError('required')">Keywords is required</p>
+        <p *ngIf="jobForm.controls['keywords'].hasError('minlength')">Should at least contain 5 words</p>
+      </div>
+      <button type="submit" [disabled]="jobForm.invalid">Add</button>
+    </form>
+  </div>
+
+   <!-- Edit Job Offer Form -->
+   <div *ngIf="editingJobOffer" class="edit-form">
+    <h3>Edit Job Offer</h3>
+    <form [formGroup]="editJobForm" (ngSubmit)="updateJobOffer()">
+      <label>Title</label>
+      <input type="text" class="form-control" formControlName="title" placeholder="Title">
+      
+      <label>Description</label>
+      <input type="text" class="form-control" formControlName="description" placeholder="Description">
+      
+      <label>Company</label>
+      <input type="text" class="form-control" formControlName="company" placeholder="Company">
+      
+      <label>Location</label>
+      <select class="form-control" formControlName="location">
+        <option value="Remote">Remote</option>
+        <option value="On-site">On-site</option>
+        <option value="Hybrid">Hybrid</option>
+      </select>
+      
+      <label>Status</label>
+      <select class="form-control" formControlName="status">
+        <option value="Open">Open</option>
+        <option value="Closed">Closed</option>
+      </select>
+      
+      <button type="submit" [disabled]="editJobForm.invalid">Update</button>
+    </form>
+  </div>
+</div>

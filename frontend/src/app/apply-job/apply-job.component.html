@@ -1,0 +1,22 @@
+<div class="background-container">
+
+<div class="form-container">
+    <h2>Apply for  {{ jobTitle }}</h2>
+    <form [formGroup]="jobForm" (ngSubmit)="applyNow()" enctype="multipart/form-data">
+      
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" formControlName="fullName" placeholder="Your full name" required>
+  
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="email" placeholder="Your email" required>
+  
+      <label for="cv">Upload CV</label>
+      <input type="file" id="cv" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx" required>
+  
+      <label for="coverLetter">Cover Letter</label>
+      <textarea id="coverLetter" formControlName="coverLetter" placeholder="Write a brief cover letter" required></textarea>
+  
+      <button type="submit">Apply Now</button>
+    </form>
+  </div>
+</div>

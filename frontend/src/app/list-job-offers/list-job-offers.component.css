@@ -1,0 +1,58 @@
+/* Custom Styles */
+.job-info {
+    flex-grow: 1;
+  }
+  
+  .job-info h5.job-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #FF6600; /* Popping Orange */
+  }
+  
+  .job-info p.company-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  .job-info p.location {
+    font-size: 0.95rem;
+  }
+  
+  .job-info p.description {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .list-group-item {
+    padding: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
+  
+  .list-group-item .btn-orange {
+    background-color: #FF6600; /* Popping Orange */
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .list-group-item .btn-orange:hover {
+    background-color: #e65c00; /* Darker Orange on hover */
+  }
+  
+  .alert {
+    margin-top: 20px;
+  }
+  
