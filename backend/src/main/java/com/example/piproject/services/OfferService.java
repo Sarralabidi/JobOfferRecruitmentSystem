@@ -26,6 +26,9 @@ public class OfferService {
     public Optional<JobOffer> getJobOfferById(Long id) {
         return jobOfferRepository.findById(id);
     }
+    public String getJobOfferDescriptionById(JobOffer jobOffer) {
+        return jobOffer.getDescription();
+    }
 
     public void deleteJobOffer(Long id) {
         jobOfferRepository.deleteById(id);
@@ -41,5 +44,9 @@ public class OfferService {
         }
 
         return List.of(); // Return empty list if no keywords found
+    }
+
+    public String getJobOfferDescription(Long jobOfferId) {
+        return jobOfferRepository.findJobOfferDescriptionById(jobOfferId);
     }
 }

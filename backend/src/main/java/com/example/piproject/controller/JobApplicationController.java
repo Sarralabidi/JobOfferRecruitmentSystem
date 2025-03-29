@@ -2,8 +2,11 @@ package com.example.piproject.controller;
 
 import com.example.piproject.DataExtraction.CVMatcher;
 import com.example.piproject.DataExtraction.CVParser;
+import com.example.piproject.DataExtraction.JobMatchingService;
 import com.example.piproject.entity.JobApplication;
 import com.example.piproject.entity.JobOffer;
+import com.example.piproject.repository.ApplicationRepository;
+import com.example.piproject.repository.JobOfferRepository;
 import com.example.piproject.services.ApplicationService;
 import com.example.piproject.services.OfferService;
 import org.apache.tika.exception.TikaException;
@@ -18,10 +21,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/applications")
@@ -32,7 +39,8 @@ public class JobApplicationController {
     @Autowired  // ✅ This ensures Spring injects the service automatically
 
     private OfferService jobService;
-
+@Autowired
+JobOfferRepository jobRepository;
 
     public JobApplicationController(ApplicationService jobApplicationService) {
         this.jobApplicationService = jobApplicationService;
@@ -58,20 +66,56 @@ public class JobApplicationController {
         jobApplication.setApplicationDate(new Date());
         jobApplication.setStatus("Pending");
         // Extract text from CV
-        String cvText = CVParser.extractText(convertToFile(cvFile));
-// 🔍 Debugging Output
-        System.out.println("📄 Extracted CV Text: [" + cvText + "]");
+        //String cvText = CVParser.extractText(convertToFile(cvFile));
+        //Extract sections from cv
+        //String cvText= CVParser.extractSections(convertToFile( cvFile)).toString();
 
-        if (cvText.isEmpty()) {
-            System.out.println("❌ Extraction failed! CV text is empty.");
+        Map<String, List<String>> extractedSections = CVParser.extractSections(convertToFile(cvFile));
+
+// Retrieve Job Description from Database
+        String jobDescription = jobService.getJobOfferDescription(jobOfferId);
+        System.out.println("the selected job desc is "+jobDescription);
+        if (jobDescription == null || jobDescription.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+// Convert List<String> sections into a single string per section
+        Map<String, String> processedSections = new HashMap<>();
+        for (Map.Entry<String, List<String>> entry : extractedSections.entrySet()) {
+            processedSections.put(entry.getKey(), String.join(" ", entry.getValue())); // Convert list to single string
+        }
+
+// Send cleaned data to AI Matching Service
+        // Call AI Matching Service and get the response
+        Map<String, Object> matchResults = JobMatchingService.matchCVWithJob(jobDescription, processedSections);
+
+// Extract global match score from the response
+        if (matchResults.containsKey("global_match_score")) {
+            double matchScore = (double) matchResults.get("global_match_score");  // Convert to double
+            jobApplication.setMatchPercentage(matchScore);  // Save it to the database
+            System.out.println("match score: " + matchScore);
+        } else {
+            System.out.println("Error: global_match_score not found in the response.");
+        }
+
+// Send to AI Matching Service didnt work because its list
+        //Map<String, Object> matchResults = JobMatchingService.matchCVWithJob(jobDescription, extractedSections);
+
+        System.out.println("🔍 AI Match Results: " + matchResults);
+
+
+// 🔍 Debugging Output
+        //System.out.println("📄 Extracted CV Text: [" + extractedSections + "]");
+
+        if (extractedSections.isEmpty()) {
+            //System.out.println("❌ Extraction failed! CV text is empty.");
         }
         // Get job requirements
         List<String> jobKeywords = jobService.getJobKeywords(jobOfferId);
 
+
         // Calculate match percentage
-        double matchScore = CVMatcher.calculateMatch(cvText, jobKeywords);
-        jobApplication.setMatchPercentage(matchScore);
-        System.out.println("match score: " + matchScore);
+        //double matchScore = CVMatcher.calculateMatch(extractedSections.toString(), jobKeywords);//cvText houni taawadhha b jdid
+
         // Call the service method with jobApplication and cvFile
         JobApplication savedApplication = jobApplicationService.saveJobApplication(jobApplication, cvFile);
 
