@@ -49,4 +49,6 @@ public class OfferService {
     public String getJobOfferDescription(Long jobOfferId) {
         return jobOfferRepository.findJobOfferDescriptionById(jobOfferId);
     }
+
+
 }

@@ -11,6 +11,10 @@ import lombok.Getter;
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
         private String title;
+
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")  // Use this for MySQLx
         private String description;
         private String company;
         private String location;

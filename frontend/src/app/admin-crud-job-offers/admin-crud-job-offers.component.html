@@ -38,7 +38,6 @@
       <input type="text" class="form-control" formControlName="title" placeholder="Title">
       <div *ngIf="jobForm.controls['title'].invalid && jobForm.controls['title'].touched" class="alert alert-danger">
         <p *ngIf="jobForm.controls['title'].hasError('required')">Title is required</p>
-        <p *ngIf="jobForm.controls['title'].hasError('minlength')">Must be at least 4 characters</p>
       </div>
 
       <label>Description</label>
@@ -68,7 +67,6 @@
       <input type="text" class="form-control" formControlName="keywords" placeholder="Keywords">
       <div *ngIf="jobForm.controls['keywords'].invalid && jobForm.controls['keywords'].touched" class="alert alert-danger">
         <p *ngIf="jobForm.controls['keywords'].hasError('required')">Keywords is required</p>
-        <p *ngIf="jobForm.controls['keywords'].hasError('minlength')">Should at least contain 5 words</p>
       </div>
       <button type="submit" [disabled]="jobForm.invalid">Add</button>
     </form>

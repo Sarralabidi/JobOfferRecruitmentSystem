@@ -1,34 +1,31 @@
 package com.example.piproject.controller;
 
-import com.example.piproject.DataExtraction.CVMatcher;
 import com.example.piproject.DataExtraction.CVParser;
 import com.example.piproject.DataExtraction.JobMatchingService;
 import com.example.piproject.entity.JobApplication;
 import com.example.piproject.entity.JobOffer;
-import com.example.piproject.repository.ApplicationRepository;
 import com.example.piproject.repository.JobOfferRepository;
 import com.example.piproject.services.ApplicationService;
 import com.example.piproject.services.OfferService;
 import org.apache.tika.exception.TikaException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ContentDisposition;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/applications")
@@ -39,8 +36,8 @@ public class JobApplicationController {
     @Autowired  // ✅ This ensures Spring injects the service automatically
 
     private OfferService jobService;
-@Autowired
-JobOfferRepository jobRepository;
+    @Autowired
+    JobOfferRepository jobRepository;
 
     public JobApplicationController(ApplicationService jobApplicationService) {
         this.jobApplicationService = jobApplicationService;
@@ -58,6 +55,7 @@ JobOfferRepository jobRepository;
 
         // Create the JobApplication object manually
         JobApplication jobApplication = new JobApplication();
+
         jobApplication.setFullName(fullName);
         jobApplication.setEmail(email);
         jobApplication.setCoverLetter(coverLetter);
@@ -74,7 +72,7 @@ JobOfferRepository jobRepository;
 
 // Retrieve Job Description from Database
         String jobDescription = jobService.getJobOfferDescription(jobOfferId);
-        System.out.println("the selected job desc is "+jobDescription);
+        System.out.println("the selected job desc is " + jobDescription);
         if (jobDescription == null || jobDescription.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -147,6 +145,9 @@ JobOfferRepository jobRepository;
         return (jobApplication != null) ? ResponseEntity.ok(jobApplication) : ResponseEntity.notFound().build();
     }
 
+
+
+
     // Get all job applications
     @GetMapping
     public ResponseEntity<List<JobApplication>> getAllJobApplications() {
@@ -162,8 +163,34 @@ JobOfferRepository jobRepository;
     }
 
 
+    @GetMapping("/cv/{id}")
+    public ResponseEntity<byte[]> getJobApplicationCV(@PathVariable("id")  Long id) {
+        byte[] cv = jobApplicationService.findJobApplicationCV(id);
+
+        if (cv != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDisposition(ContentDisposition.attachment().filename("cv.pdf").build());
+            return new ResponseEntity<>(cv, headers, HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        String status = request.get("status");
+        jobApplicationService.updateStatus(id, status);
+        return ResponseEntity.ok().build();
+    }
+
 
 
 
 
 }
+
+
+
+
+

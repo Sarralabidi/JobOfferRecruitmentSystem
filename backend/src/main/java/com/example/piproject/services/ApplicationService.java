@@ -1,7 +1,5 @@
 package com.example.piproject.services;
 
-import com.example.piproject.DataExtraction.CVMatcher;
-import com.example.piproject.DataExtraction.CVParser;
 import com.example.piproject.entity.JobApplication;
 import com.example.piproject.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +53,19 @@ import java.util.Optional;
     public void deleteJobApplication(Long id) {
         applicationRepository.deleteById(id);
     }
+
+    public byte[] findJobApplicationCV(Long id) {
+        return applicationRepository.findCvById(id);
+    }
+
+    public void updateStatus(Long id, String status) {
+        JobApplication application = applicationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Application not found"));
+
+        application.setStatus(status);
+        applicationRepository.save(application);
+    }
+
+
     }
 

@@ -31,6 +31,15 @@ public class JobApplication {
     @Column(name = "cv_file",columnDefinition = "LONGBLOB")
     private byte[] cvFile; // Store as binary data OR use a file path
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getFullName() {
         return fullName;
     }

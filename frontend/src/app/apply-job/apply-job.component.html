@@ -1,22 +1,49 @@
-<div class="background-container">
+<head>
+  <h1>Job Offers </h1>
+</head>
 
-<div class="form-container">
-    <h2>Apply for  {{ jobTitle }}</h2>
-    <form [formGroup]="jobForm" (ngSubmit)="applyNow()" enctype="multipart/form-data">
-      
-      <label for="fullName">Full Name</label>
-      <input type="text" id="fullName" formControlName="fullName" placeholder="Your full name" required>
-  
-      <label for="email">Email</label>
-      <input type="email" id="email" formControlName="email" placeholder="Your email" required>
-  
-      <label for="cv">Upload CV</label>
-      <input type="file" id="cv" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx" required>
-  
-      <label for="coverLetter">Cover Letter</label>
-      <textarea id="coverLetter" formControlName="coverLetter" placeholder="Write a brief cover letter" required></textarea>
-  
-      <button type="submit">Apply Now</button>
-    </form>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10"> <!-- Increased width -->
+      <div class="card shadow-lg form-card">
+        <div class="card-body">
+          <h2 class="text-center job-title">Apply for {{ jobTitle }}</h2>
+          <form [formGroup]="jobForm" (ngSubmit)="applyNow()" enctype="multipart/form-data">
+            
+            <div class="row">
+              <!-- Full Name -->
+              <div class="col-md-6 mb-3">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input type="text" id="fullName" formControlName="fullName" class="form-control input-lg" placeholder="Your full name" required>
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" formControlName="email" class="form-control input-lg" placeholder="Your email" required>
+              </div>
+            </div>
+
+            <!-- CV Upload -->
+            <div class="mb-3">
+              <label for="cv" class="form-label">Upload CV</label>
+              <input type="file" id="cv" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx" class="form-control file-input" required>
+            </div>
+
+            <!-- Cover Letter -->
+            <div class="mb-4">
+              <label for="coverLetter" class="form-label">Cover Letter</label>
+              <textarea id="coverLetter" formControlName="coverLetter" class="form-control input-lg" placeholder="Write a brief cover letter" rows="5" required></textarea>
+            </div>
+
+            <!-- Apply Button -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-orange btn-lg">Apply Now</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

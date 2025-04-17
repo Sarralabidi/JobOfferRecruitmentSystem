@@ -17,25 +17,22 @@ export class AdminCrudJobOffersComponent implements OnInit {
   selectedOffer: JobOffer | null = null;
  jobForm: FormGroup;
  editJobForm!: FormGroup;
+ constructor(private jobOfferService: JobOfferService) { // Regular expression to allow only letters (including accented characters) and spaces
+  const lettersOnly = Validators.pattern(/^[A-Za-zÀ-ÿ\s]+$/);
 
-  constructor(private jobOfferService: JobOfferService) {
-    // Initialisation du formulaire avec FormGroup et FormControl
-    this.jobForm = new FormGroup({
-      title: new FormControl('', [Validators.required, Validators.minLength(4)]),
-      description: new FormControl('', Validators.required),
-      location: new FormControl('', [Validators.required]),
-      status: new FormControl('', Validators.required),
-      keywords: new FormControl('', Validators.required)
-
-    });
-     // Form for editing existing job
-     this.editJobForm = new FormGroup({
-      title: new FormControl('', [Validators.required, Validators.minLength(4)]),
-      description: new FormControl('', Validators.required),
-      company: new FormControl('', Validators.required),
-      location: new FormControl('', Validators.required),
-      status: new FormControl('', Validators.required)
-    });
+  // Form for adding a new job offer
+   this.jobForm = new FormGroup({ title: new FormControl('',
+     [ Validators.required, Validators.minLength(4), lettersOnly ]),
+     description: new FormControl('', [Validators.required,lettersOnly]), 
+       location: new FormControl('', [ Validators.required, lettersOnly ]), 
+       status: new FormControl('', Validators.required), keywords: new FormControl('', Validators.required) });
+  
+  // Form for editing an existing job offer
+   this.editJobForm = new FormGroup({ title: new FormControl('', [ Validators.required, Validators.minLength(4), lettersOnly ]),
+     description: new FormControl('', [Validators.required,lettersOnly]), 
+     company: new FormControl('', [ Validators.required, lettersOnly ]), 
+     location: new FormControl('', [ Validators.required, lettersOnly ]), 
+     status: new FormControl('', Validators.required) }); 
   }
 
   ngOnInit(): void {
