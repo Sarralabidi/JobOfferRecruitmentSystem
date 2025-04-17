@@ -1,0 +1,94 @@
+<app-header></app-header>
+<!-- Add a spacer -->
+<div class="my-100"></div>
+<!-- Hero Section / Intro Banner -->
+<div class="text-center my-5 p-5 bg-light rounded-4 ">
+  <h1 class="fw-bold display-4" >  Our Available Job Offers</h1>
+  <p class="lead text-muted mt-3">Discover a variety of opportunities tailored just for you or let our AI help you ! </p>
+  <!-- Try With AI Button -->
+<div class="text-center my-5">
+  <button class="btn btn-orange btn-lg" (click)="openAiModal()">
+    🤖 Try with AI
+  </button>
+</div>
+</div>
+
+<!-- AI Modal -->
+<div class="modal fade" id="aiModal" tabindex="-1" aria-labelledby="aiModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content p-4">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aiModalLabel">🚀 Try with AI</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeAiModal()"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="lead">Drag & Drop your CV here 📄<br>or Copy-Paste your text below 👇</p>
+        
+        <!-- File Upload -->
+        <input type="file" (change)="onCvFileSelected($event)" class="form-control my-3" accept=".pdf,.doc,.docx">
+
+        <!-- OR Paste Text -->
+        <textarea class="form-control" rows="6" [(ngModel)]="cvText" placeholder="Or paste your CV content here..."></textarea>
+
+        <button class="btn btn-success mt-4" (click)="submitCvToAi()">Send to AI 🚀</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Error Message -->
+<div *ngIf="errorMessage" class="alert alert-danger text-center">
+  <strong>Error!</strong> {{ errorMessage }}
+</div>
+
+<!-- No Job Offers Message -->
+<div *ngIf="!errorMessage && jobOffers.length === 0" class="alert alert-info text-center">
+  <strong>Notice!</strong> No job offers available at the moment.
+</div>
+<!-- Toggle Button -->
+<div *ngIf="isShowingRecommendations" class="text-center mb-4">
+  <button class="btn btn-outline-secondary" (click)="goBackToAllOffers()">🔙 Back to All Offers</button>
+</div>
+<!-- Job Offers Grid -->
+<div *ngIf="!errorMessage && jobOffers.length > 0" class="container">
+  <div class="row">
+    <div *ngFor="let jobOffer of jobOffers" class="col-md-6 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title job-title">{{ jobOffer.title }}</h5>
+          <p class="card-text company-name"><strong>{{ jobOffer.company }}</strong></p>
+          <p class="text-muted location">{{ jobOffer.location }}</p>
+          <p class="description">{{ jobOffer.description }}</p>
+        </div>
+        <div class="card-footer text-end">
+          <button class="btn btn-orange btn-sm" [routerLink]="['/applyjob', jobOffer.id, jobOffer.title]">Apply Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recommended Jobs -->
+<div *ngIf="isShowingRecommendations && recommendedOffers.length > 0" class="container mt-5">
+  <h2 class="text-center mb-4">🎯 Jobs Recommended For You</h2>
+  <div class="row">
+    <div *ngFor="let jobOffer of recommendedOffers" class="col-md-6 mb-4">
+      <div class="card h-100 shadow-sm border-success">
+        <div class="card-body">
+          <h5 class="card-title">{{ jobOffer.title }}</h5>
+          <p><strong>{{ jobOffer.company }}</strong></p>
+          <p class="text-muted">{{ jobOffer.location }}</p>
+          <p>{{ jobOffer.description }}</p>
+        </div>
+        <div class="card-footer text-end">
+          <button class="btn btn-success btn-sm" [routerLink]="['/applyjob', jobOffer.id, jobOffer.title]">Apply Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<app-footer></app-footer>

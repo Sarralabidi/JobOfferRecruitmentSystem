@@ -1,0 +1,89 @@
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { JobOffer } from 'src/app/models/jobs/JobOffer';
+import { JobOfferService } from 'src/app/services/jobs/job-offer.service';
+import * as bootstrap from 'bootstrap'; // <-- add this at the top
+
+@Component({
+  selector: 'app-list-job-offers',
+  templateUrl: './list-job-offers.component.html',
+  styleUrls: ['./list-job-offers.component.css']
+})
+export class ListJobOffersComponent {
+  bootstrap: any;
+  recommendedOffers: JobOffer[] = [];
+  isShowingRecommendations: boolean = false;
+  jobOffers: JobOffer[] = [];
+  errorMessage: string = '';
+
+
+  constructor(private jobOfferService: JobOfferService, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.fetchJobOffers();
+  }
+
+  fetchJobOffers(): void {
+    this.jobOfferService.getJobOffers().subscribe((data: JobOffer[]) => {
+      this.jobOffers = data;
+      console.log(this.jobOffers);
+    });
+  }
+
+
+
+  cvText: string = '';
+selectedCvFile: File | null = null;
+
+openAiModal() {
+  const modalElement = document.getElementById('aiModal');
+  if (modalElement) {
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+  }
+}
+
+closeAiModal() {
+  const modalElement = document.getElementById('aiModal');
+  if (modalElement) {
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    modal?.hide();
+  }
+}
+
+onCvFileSelected(event: any) {
+  if (event.target.files.length > 0) {
+    this.selectedCvFile = event.target.files[0];
+  }
+}
+submitCvToAi() {
+  const formData = new FormData();
+  
+  if (this.selectedCvFile) {
+    formData.append('cvFile', this.selectedCvFile); // 💡 Important key name
+  } else {
+    alert('Please upload a file.');
+    return;
+  }
+
+  this.http.post('http://localhost:9090/api/job-offers/recommend', formData).subscribe({
+    next: (response: any) => {
+      console.log(response);
+      alert('Recommended jobs received! 🎯');
+      
+      this.recommendedOffers = response.recommended_jobs;
+      this.isShowingRecommendations = true;
+      this.closeAiModal();
+    },
+    error: (err: any) => {
+      console.error(err);
+      alert('Error sending CV to backend.');
+    }
+  });
+}
+goBackToAllOffers() {
+  this.isShowingRecommendations = false;
+}
+
+
+}

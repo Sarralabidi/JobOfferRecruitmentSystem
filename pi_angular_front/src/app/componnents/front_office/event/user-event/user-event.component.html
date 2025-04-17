@@ -1,0 +1,93 @@
+<app-header></app-header>
+<div class="container">
+  <h2>User Events</h2>
+
+  <!-- 🔍 Search bar -->
+  <div class="input-group my-4">
+    <input class="form-control" [(ngModel)]="searchTerm" placeholder="Search events..." />
+  </div>
+
+  <!-- 🟢 Virtual Events -->
+  <h3>🟢 Virtual Events</h3>
+  <ul *ngIf="filteredVirtualEvents.length > 0; else noVirtual">
+    <li *ngFor="let ev of filteredVirtualEvents">
+      <strong>{{ ev.title }}</strong><br />
+      {{ ev.description }}<br />
+      <button class="btn btn-info btn-sm" [routerLink]="['/virtual-meeting', ev.eventId]">
+        Join Virtual Meeting
+      </button>
+    </li>
+  </ul>
+  <ng-template #noVirtual>
+    <p class="text-muted">No virtual events match your search.</p>
+  </ng-template>
+
+  <!-- 🔢 Pagination virtual -->
+  <nav *ngIf="totalPagesVirtual > 1" class="mt-2">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" *ngFor="let page of [].constructor(totalPagesVirtual); let i = index"
+          [class.active]="currentPageVirtual === (i + 1)">
+        <a class="page-link" href="#" (click)="changePageVirtual(i + 1); $event.preventDefault()">
+          {{ i + 1 }}
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- 📍 Physical Events -->
+  <h3 class="mt-5">📍 Physical Events</h3>
+  <ul *ngIf="filteredPhysicalEvents.length > 0; else noPhysical">
+    <li *ngFor="let ev of filteredPhysicalEvents">
+      <div>
+        <strong>{{ ev.title }}</strong><br />
+        {{ ev.description }}<br />
+        From {{ ev.startDate }} to {{ ev.endDate }}<br />
+        Location: {{ ev.location }}<br />
+        Category: {{ ev.category?.name || 'None' }}
+      </div>
+      <button class="btn btn-success btn-sm me-2" [routerLink]="['/event-map', ev.eventId]">View on Map</button>
+      <button class="btn btn-primary btn-sm" (click)="openParticipationModal(ev)">Participate</button>
+    </li>
+  </ul>
+  <ng-template #noPhysical>
+    <p class="text-muted">No physical events match your search.</p>
+  </ng-template>
+
+  <!-- 🔢 Pagination physical -->
+  <nav *ngIf="totalPagesPhysical > 1" class="mt-2">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" *ngFor="let page of [].constructor(totalPagesPhysical); let i = index"
+          [class.active]="currentPagePhysical === (i + 1)">
+        <a class="page-link" href="#" (click)="changePagePhysical(i + 1); $event.preventDefault()">
+          {{ i + 1 }}
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ✅ Participation Modal -->
+  <div class="modal fade" id="participationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Participate in: {{ selectedEventTitle }}</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control mb-2" placeholder="Username" [(ngModel)]="formData.username" [ngModelOptions]="{standalone:true}">
+          <input class="form-control mb-2" placeholder="Email" type="email" [(ngModel)]="formData.email" [ngModelOptions]="{standalone:true}">
+
+          <div *ngIf="responseMessage" class="alert alert-info mt-2">
+            {{ responseMessage }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button class="btn btn-success" (click)="submitParticipation()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<app-footer></app-footer>

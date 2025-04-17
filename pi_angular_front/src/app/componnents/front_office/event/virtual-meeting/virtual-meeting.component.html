@@ -1,0 +1,11 @@
+<div class="container mt-4">
+  <h2>Virtual Meeting Room</h2>
+  <p><strong>Room ID:</strong> {{ eventId }}</p>
+
+  <button (click)="callPeer()" class="btn btn-primary btn-sm mt-2">Join Meeting</button>
+
+  <div class="video-container mt-3">
+    <video #localVideo width="300" autoplay muted></video>
+    <video #remoteVideo width="300" autoplay></video>
+  </div>
+</div>

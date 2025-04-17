@@ -1,0 +1,71 @@
+<div class="container">
+    <h2>Event Management</h2>
+  
+    <!-- New Event Form -->
+    <input class="form-control mb-2" [(ngModel)]="newEvent.title" placeholder="Title" required />
+    <input class="form-control mb-2" [(ngModel)]="newEvent.description" placeholder="Description" required />
+    
+    <label>Start Date</label>
+    <input class="form-control mb-2" type="date" [(ngModel)]="newEvent.startDate" required />
+    
+    <label>End Date</label>
+    <input class="form-control mb-2" type="date" [(ngModel)]="newEvent.endDate" required />
+  
+    <select class="form-control mb-2" [(ngModel)]="newEvent.category" required>
+      <option [ngValue]="null">Select Category</option>
+      <option *ngFor="let cat of categories" [ngValue]="cat">{{ cat.name }}</option>
+    </select>
+  
+    <label>
+      <input type="checkbox" [(ngModel)]="newEvent.isVirtual" /> Virtual Event
+    </label>
+  
+    <input *ngIf="!newEvent.isVirtual" class="form-control mb-2" [(ngModel)]="newEvent.location" placeholder="City (Location)" required />
+  
+    <button class="btn btn-primary" (click)="addEvent()">Add Event</button>
+  
+    <hr />
+  
+    <!-- Events List -->
+    <ul>
+      <li *ngFor="let ev of events">
+        <strong>{{ ev.title }}</strong> ({{ ev.isVirtual ? 'Virtual' : 'Physical' }})<br />
+        {{ ev.description }} ({{ ev.category?.name }})<br />
+  
+        <button class="btn btn-warning btn-sm" (click)="editEvent(ev)">Edit</button>
+        <button class="btn btn-danger btn-sm" (click)="deleteEvent(ev.eventId!)">Delete</button>
+  
+        <button *ngIf="ev.isVirtual" class="btn btn-success btn-sm mt-1" [routerLink]="['/virtual-meeting', ev.eventId]">
+          Launch Virtual Meeting
+        </button>
+      </li>
+    </ul>
+  
+    <!-- Edit Event Form -->
+    <div *ngIf="selectedEvent">
+      <h3>Edit Event</h3>
+      <input class="form-control mb-2" [(ngModel)]="selectedEvent.title" placeholder="Title" required />
+      <input class="form-control mb-2" [(ngModel)]="selectedEvent.description" placeholder="Description" required />
+      
+      <label>Start Date</label>
+      <input class="form-control mb-2" type="date" [(ngModel)]="selectedEvent.startDate" required />
+      
+      <label>End Date</label>
+      <input class="form-control mb-2" type="date" [(ngModel)]="selectedEvent.endDate" required />
+  
+      <select class="form-control mb-2" [(ngModel)]="selectedEvent.category" required>
+        <option [ngValue]="null">Select Category</option>
+        <option *ngFor="let cat of categories" [ngValue]="cat">{{ cat.name }}</option>
+      </select>
+  
+      <label>
+        <input type="checkbox" [(ngModel)]="selectedEvent.isVirtual" /> Virtual Event
+      </label>
+  
+      <input *ngIf="!selectedEvent.isVirtual" class="form-control mb-2" [(ngModel)]="selectedEvent.location" placeholder="City (Location)" required />
+  
+      <button class="btn btn-success btn-sm" (click)="updateEvent()">Update</button>
+      <button class="btn btn-secondary btn-sm" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </div>
+  
