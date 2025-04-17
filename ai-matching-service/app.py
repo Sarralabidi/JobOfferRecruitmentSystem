@@ -76,7 +76,7 @@ def recommend_jobs():
             "match_score": round(score, 2)
         })
 
-    # ✅ Add filtering step here (IMPORTANT!)
+    # Add filtering step here (IMPORTANT!)
     filtered_jobs = [job for job in scored_jobs if job["match_score"] >= 50]  # You can tweak threshold
     filtered_jobs.sort(key=lambda x: x["match_score"], reverse=True)
 
