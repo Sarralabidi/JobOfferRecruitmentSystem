@@ -81,7 +81,10 @@
                     <th>Company</th>
                     <th>Location</th>
                     <th>Status</th>
+                    <th>Remuneration</th>
+                    <th>Type of Contract</th>
                     <th>Actions</th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -91,6 +94,10 @@
                     <td>{{ jobOffer.company }}</td>
                     <td>{{ jobOffer.location }}</td>
                     <td>{{ jobOffer.status }}</td>
+                    <td>{{ jobOffer.remuneration }}</td>
+                    <td>{{ jobOffer.type }}</td>
+
+
                     <td>
                       <button (click)="editJobOffer(jobOffer)">Edit</button>
                       <button (click)="deleteJobOffer(jobOffer.id)">Delete</button>
@@ -128,6 +135,22 @@
                   <div *ngIf="jobForm.controls['location'].invalid && jobForm.controls['location'].touched" class="alert alert-danger">
                     <p>Location is required</p>
                   </div>
+
+                  <label>Type of Contract</label>
+                  <select class="form-control" formControlName="type">
+                    <option value="" disabled>Select Type</option>
+                    <option value="CDD">CDD</option>
+                    <option value="CDI">CDI</option>
+                  </select>
+                  <div *ngIf="jobForm.controls['location'].invalid && jobForm.controls['location'].touched" class="alert alert-danger">
+                    <p>Location is required</p>
+                  </div>
+
+
+
+
+
+
             
                   <label>Status</label>
                   <select class="form-control" formControlName="status">
@@ -141,6 +164,18 @@
                     <p *ngIf="jobForm.controls['keywords'].hasError('required')">Keywords is required</p>
                     <p *ngIf="jobForm.controls['keywords'].hasError('minlength')">Should at least contain 5 words</p>
                   </div>
+
+                  
+                   
+                  <label>Remuneration</label>
+                  <input type="text" class="form-control" formControlName="remuneration" placeholder="remuneration">
+                  <div *ngIf="jobForm.controls['remuneration'].invalid && jobForm.controls['remuneration'].touched" class="alert alert-danger">
+                    <p *ngIf="jobForm.controls['remuneration'].hasError('required')">remuneration is required</p>
+                  </div>
+
+
+                  
+
                   <button type="submit" [disabled]="jobForm.invalid">Add</button>
                 </form>
               </div>
@@ -165,13 +200,31 @@
                     <option value="Hybrid">Hybrid</option>
                   </select>
                   
+
                   <label>Status</label>
                   <select class="form-control" formControlName="status">
                     <option value="Open">Open</option>
                     <option value="Closed">Closed</option>
                   </select>
+
+         
+                  <label>Type of Contract</label>
+                  <select class="form-control" formControlName="type">
+                    <option value="CDD">CDD</option>
+                    <option value="CDI">CDI</option>
+                  </select>
+
+
+
+
                   
-                  <button type="submit" [disabled]="editJobForm.invalid">Update</button>
+                     
+                  <label>Remuneration</label>
+                  <input type="text" class="form-control" formControlName="remuneration" placeholder="remuneration">
+                 
+
+
+                  <button type="submit" >Update</button>
                 </form>
               </div>
             </div>

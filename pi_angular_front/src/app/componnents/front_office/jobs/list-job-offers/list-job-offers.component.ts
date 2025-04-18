@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { JobOffer } from 'src/app/models/jobs/JobOffer';
 import { JobOfferService } from 'src/app/services/jobs/job-offer.service';
 import * as bootstrap from 'bootstrap'; // <-- add this at the top
+import { Options } from '@angular-slider/ngx-slider';
+
 
 @Component({
   selector: 'app-list-job-offers',
@@ -15,7 +17,21 @@ export class ListJobOffersComponent {
   isShowingRecommendations: boolean = false;
   jobOffers: JobOffer[] = [];
   errorMessage: string = '';
+  locationFilter: string = '';
+  typeFilter: string = '';
+  minSalary?: number;
+  maxSalary?: number;
+  filteredOffers: JobOffer[] = [];
+  salaryRange: number[] = [0, 10000]; // [min, max]
+  salaryRangeMax: number = 10000;
+  salaryRangeMin: number=0;
 
+  minValue: number = 50;
+  maxValue: number = 200;
+  options: Options = {
+    floor: 0,
+    ceil: 5000
+  };
 
   constructor(private jobOfferService: JobOfferService, private http: HttpClient) {}
 
@@ -26,6 +42,7 @@ export class ListJobOffersComponent {
   fetchJobOffers(): void {
     this.jobOfferService.getJobOffers().subscribe((data: JobOffer[]) => {
       this.jobOffers = data;
+      //this.applyFilters(); // initialize filtered list new added
       console.log(this.jobOffers);
     });
   }
@@ -84,6 +101,30 @@ submitCvToAi() {
 goBackToAllOffers() {
   this.isShowingRecommendations = false;
 }
+
+
+applyFilters() {
+  this.filteredOffers = this.jobOffers.filter((offer) => {
+    const matchesLocation =
+      !this.locationFilter ||
+      (offer.location ?? '').toLowerCase().includes(this.locationFilter.toLowerCase());
+
+    const matchesType =
+      !this.typeFilter || offer.type === this.typeFilter;
+
+    const salary = parseInt(offer.remuneration.toString(), 10);
+    const matchesSalaryRange =
+      salary >= this.minValue && salary <= this.maxValue;
+
+    return matchesLocation && matchesType && matchesSalaryRange;
+  });
+}
+
+
+
+
+
+
 
 
 }

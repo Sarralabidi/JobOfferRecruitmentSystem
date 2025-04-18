@@ -50,6 +50,8 @@ import java.util.Optional;
         jobOffer.setCompany(jobOfferDetails.getCompany());
         jobOffer.setLocation(jobOfferDetails.getLocation());
         jobOffer.setStatus(jobOfferDetails.getStatus());
+        jobOffer.setRemuneration(jobOfferDetails.getRemuneration());
+        jobOffer.setType(jobOfferDetails.getType());
 
         return jobOfferRepository.save(jobOffer);
     }

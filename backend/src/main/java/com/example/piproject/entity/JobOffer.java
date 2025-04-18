@@ -21,6 +21,10 @@ import lombok.Getter;
     private String keywords; //
         @Getter
         private String status;
+        private String type;
+
+
+        private double remuneration;
 
         // Getters and Setters
 
@@ -78,12 +82,30 @@ import lombok.Getter;
         this.location = location;
     }
 
+
+
     public void setStatus(String status) {
         this.status = status;
     }
 
     public String getStatus() {
         return status;
+    }
+
+    public double getRemuneration() {
+        return remuneration;
+    }
+
+    public void setRemuneration(double remuneration) {
+        this.remuneration = remuneration;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
 

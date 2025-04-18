@@ -20,6 +20,7 @@ import { ListJobOffersComponent } from './componnents/front_office/jobs/list-job
 import { ApplyJobComponent } from './componnents/front_office/jobs/apply-job/apply-job.component';
 import { AdminCrudJobOffersComponent } from './componnents/back_office/jobs/admin-crud-job-offers/admin-crud-job-offers.component';
 import { AdminDashlistapplicationsComponent } from './componnents/back_office/jobs/admin-dashlistapplications/admin-dashlistapplications.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { AdminDashlistapplicationsComponent } from './componnents/back_office/jo
     AdminDashlistapplicationsComponent,
     
 
+
    
   ],
   imports: [
@@ -49,7 +51,9 @@ import { AdminDashlistapplicationsComponent } from './componnents/back_office/jo
     RouterLink,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSliderModule
+
 
   ],
   providers: [],

@@ -11,7 +11,7 @@ import { JobOfferService } from 'src/app/services/jobs/job-offer.service';
 export class AdminCrudJobOffersComponent implements OnInit {
 
   jobOffers: any[] = [];
-  newJobOffer = { title: '', description: '', company: 'WellU', location: '', status: 'Open' , keywords:'' };
+  newJobOffer = { title: '', description: '', company: 'WellU', location: '', status: 'Open' , keywords:'', remuneration:0,type:''};
   editingJobOffer: any = null;
   addingJobOffer: boolean = false;  // Initially hidden
   selectedOffer: JobOffer | null = null;
@@ -29,6 +29,8 @@ export class AdminCrudJobOffersComponent implements OnInit {
        [ Validators.required, Validators.minLength(4), lettersOnly ]),
        description: new FormControl('', [Validators.required,lettersOnly]), 
          location: new FormControl('', [ Validators.required, lettersOnly ]), 
+         type: new FormControl('', [ Validators.required, lettersOnly ]), 
+         remuneration: new FormControl('', [Validators.required, Validators.min(0)]),
          status: new FormControl('', Validators.required), keywords: new FormControl('', Validators.required) });
     
     // Form for editing an existing job offer
@@ -36,6 +38,9 @@ export class AdminCrudJobOffersComponent implements OnInit {
        description: new FormControl('', [Validators.required,lettersOnly]), 
        company: new FormControl('', [ Validators.required, lettersOnly ]), 
        location: new FormControl('', [ Validators.required, lettersOnly ]), 
+       type: new FormControl('', [ Validators.required, lettersOnly ]), 
+    
+       remuneration: new FormControl('', [Validators.required, Validators.min(0)]),
        status: new FormControl('', Validators.required) }); 
     
   }
@@ -85,9 +90,11 @@ export class AdminCrudJobOffersComponent implements OnInit {
     this.editJobForm.patchValue({
       title: jobOffer.title,
       description: jobOffer.description,
-      company: jobOffer.company,
+      company: 'WellU',
       location: jobOffer.location,
-      status: jobOffer.status
+      status: jobOffer.status,
+      remuneration:jobOffer.remuneration,
+      type:jobOffer.type
     });
   }
 

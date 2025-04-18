@@ -6,4 +6,6 @@
           location:string | undefined;
           status:string | undefined;
           keywords!: string;
+          remuneration!:number;
+          type!:string;
         }
