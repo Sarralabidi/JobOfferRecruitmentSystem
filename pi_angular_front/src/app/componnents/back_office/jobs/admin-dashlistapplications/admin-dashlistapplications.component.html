@@ -98,23 +98,30 @@
                         </select>
                       </td>
                        
-                                           <td [ngStyle]="{
+                      <td [ngStyle]="{
                             'background-color': getMatchScoreColor(application.matchPercentage),
                             'color': application.matchPercentage < 50 ? 'white' : 'black',
                             'font-weight': 'bold'
                           }">
                         {{ application.matchPercentage | number:'1.0-2' }}%
                       </td>
+
                       <td><button (click)="viewCV(application?.id)" class="btn btn-outline-primary btn-sm" title="View CV">
                         👁️
                       </button></td>
-                      <td></td>
+
+                      <td>   <button (click)="scheduleInterview()" title="Schedule Interview">Schedule Interview</button>
+                      </td>
 
                     </tr>
                   </tbody>
                 </table>
               </div>
-            
+            <app-scheduleinterviewadmin *ngIf="showScheduleModal"
+              (closeModal)="closeScheduleModal()"
+              (slotsSelected)="handleAdminSlots($event)"></app-scheduleinterviewadmin>
+
+
               <!-- Pagination centered under the table -->
               <div class="d-flex justify-content-center mt-3">
                 <nav *ngIf="jobApplications.length > itemsPerPage">

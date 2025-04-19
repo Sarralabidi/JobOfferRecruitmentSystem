@@ -1,58 +1,89 @@
 
   
     <script src="../assets/js/jquery-2.1.0.min.js"></script>
-   <!-- Bootstrap -->
-<script src="../assets/js/popper.js"></script>
-<script src="../assets/js/bootstrap.min.js"></script>
-
-<!-- Plugins -->
-<script src="../assets/js/owl-carousel.js"></script>
-<script src="../assets/js/scrollreveal.min.js"></script>
-<script src="../assets/js/waypoints.min.js"></script>
-<script src="../assets/js/jquery.counterup.min.js"></script>
-<script src="../assets/js/imgfix.min.js"></script>
-
-<!-- Global Init -->
-<script src="../assets/js/custom.js"></script>
-<header class="header-area header-sticky">
-  <div class="container">
-      <div class="row">
-          <div class="col-12">
-              <nav class="main-nav">
-                  <!-- ***** Logo Start ***** -->
-                  <a href="../home/home.component.html" class="logo">
-                     
-                  </a>
-                  <!-- ***** Logo End ***** -->
-                  <!-- ***** Menu Start ***** -->
-                  <ul class="nav">
-                      <li class="scroll-to-section"><a href="#welcome" class="menu-item">Home</a></li>
-                      <li class="scroll-to-section"><a href="#about" class="menu-item">About</a></li>
-                      <li class="scroll-to-section"><a a routerLink="/listoffers" routerLinkActive="active" class="menu-item">Jobs</a></li>
-                      <li class="scroll-to-section"><a href="" class="menu-item">Shop</a></li>
-                      <li ><a routerLink="/user-events" routerLinkActive="active" class="me-3">Events</a></li>
-
-                      <li class="submenu">
-                          <a href="javascript:;">Health</a>
-                          <ul>
-                              <li><a href="" class="menu-item">Meals</a></li>
-                              <li><a href="" class="menu-item">Activities</a></li>
-                            
-                          </ul>
-                      </li>
-                      <li class="scroll-to-section"><a href="" class="menu-item">Forum</a></li>
-                      <li class="scroll-to-section"><a href="#contact-us" class="menu-item">Contact Us</a></li>
-                  </ul>
-                  <a class='menu-trigger'>
-                      <span>Menu</span>
-                  </a>
-                  <!-- ***** Menu End ***** -->
-              </nav>
+    <!-- Bootstrap -->
+ <script src="../assets/js/popper.js"></script>
+ <script src="../assets/js/bootstrap.min.js"></script>
+ 
+ <!-- Plugins -->
+ <script src="../assets/js/owl-carousel.js"></script>
+ <script src="../assets/js/scrollreveal.min.js"></script>
+ <script src="../assets/js/jquery.counterup.min.js"></script>
+ <script src="../assets/js/imgfix.min.js"></script>
+ 
+ <!-- Global Init -->
+ <script src="../assets/js/custom.js"></script>
+ <header class="header-area header-sticky bg-white shadow-sm">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light py-3">
+        <!-- Brand -->
+        <a class="navbar-brand fw-bold text-primary" routerLink="/">
+          <img src="assets/front_office/assets/images/logo.png"  height="40" />
+        </a>
+  
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <!-- Nav Links -->
+        <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarNav">
+          <ul class="navbar-nav mx-auto gap-3">
+            <li class="nav-item"><a class="nav-link" href="#welcome">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/listoffers">Jobs</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/user-events">Events</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="healthDropdown" data-toggle="dropdown">
+                Health
+              </a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Meals</a>
+                <a class="dropdown-item" href="#">Activities</a>
+              </div>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#">Forum</a></li>
+          </ul>
+  
+          <!-- Right Side Auth/Profile -->
+          <div class="d-flex align-items-center">
+            <ng-container *ngIf="!isLoggedIn">
+              <button class="btn btn-outline-primary me-2" routerLink="/login">Login</button>
+              <button class="btn btn-primary" routerLink="/register">Register</button>
+            </ng-container>
+  
+            <ng-container *ngIf="isLoggedIn">
+              <div class="position-relative">
+                <img [src]="userPhotoUrl || 'assets/static_assets/user.png'"
+                     class="rounded-circle"
+                     width="40" height="40"
+                     style="cursor:pointer"
+                     (click)="toggleDropdown()" />
+                <!-- Dropdown -->
+                <div *ngIf="isDropdownOpen"
+                     class="position-absolute bg-white shadow p-3 rounded"
+                     style="top: 50px; right: 0; min-width: 200px; z-index: 1000;">
+                  <div class="mb-2">
+                    <strong>{{ username }}</strong><br>
+                    <small class="text-muted">{{ role }}</small>
+                  </div>
+                  <hr>
+                  <a class="dropdown-item" [routerLink]="['/profile', '@' + username]">Profile</a>
+                  <a class="dropdown-item" routerLink="/profile-update">Edit Profile</a>
+                  <button class="dropdown-item btn btn-sm btn-outline-danger w-100 mt-2" (click)="logout()">
+                    Logout
+                  </button>
+                </div>
+              </div>
+            </ng-container>
           </div>
-      </div>
-  </div>
-<header>
-
-
-
-<!-- ***** Header Area End ***** -->
+        </div>
+      </nav>
+    </div>
+  </header>
+  
+ 
+ 
+ <!-- ***** Header Area End ***** -->
+ 

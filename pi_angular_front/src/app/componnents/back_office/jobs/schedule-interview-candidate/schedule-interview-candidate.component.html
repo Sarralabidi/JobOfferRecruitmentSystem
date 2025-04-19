@@ -1,0 +1,34 @@
+<div class="container mt-4">
+    <h2 class="text-center mb-4">📅 Select Your Interview Time</h2>
+  
+    <div *ngIf="proposedSlots.length > 0; else noSlots">
+      <form (ngSubmit)="submitSelectedSlot()">
+        <div class="list-group">
+          <label 
+            class="list-group-item" 
+            *ngFor="let slot of proposedSlots">
+            <input 
+              type="radio" 
+              name="selectedSlot" 
+              [value]="slot" 
+              [(ngModel)]="selectedSlot" 
+              class="form-check-input me-2">
+            {{ slot | date:'fullDate' }} at {{ slot | date:'shortTime' }}
+          </label>
+        </div>
+  
+        <div class="text-center mt-4">
+          <button class="btn btn-primary" type="submit" [disabled]="!selectedSlot">
+            Confirm Interview Slot
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <ng-template #noSlots>
+      <div class="alert alert-info text-center">
+        No available interview slots at the moment.
+      </div>
+    </ng-template>
+  </div>
+  

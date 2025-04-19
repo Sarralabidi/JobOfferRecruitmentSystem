@@ -11,9 +11,13 @@ import { JobOfferService } from 'src/app/services/jobs/job-offer.service';
   styleUrls: ['./admin-dashlistapplications.component.css']
 })
 export class AdminDashlistapplicationsComponent {
+scheduleinterview() {
+throw new Error('Method not implemented.');
+}
 
 
   jobApplications: any[] = [];
+  showScheduleModal: boolean = false;
 
 
   
@@ -116,4 +120,22 @@ viewCV(id: number): void {
     }
   );
   
-}}
+}
+
+
+scheduleInterview() {
+  this.showScheduleModal = true;
+}
+
+closeScheduleModal() {
+  this.showScheduleModal = false;
+}
+
+handleAdminSlots(slots: any[]) {
+  console.log("Selected time slots by admin:", slots);
+  // TODO: send to backend or trigger email logic
+}
+
+
+
+}

@@ -21,6 +21,15 @@ import { ApplyJobComponent } from './componnents/front_office/jobs/apply-job/app
 import { AdminCrudJobOffersComponent } from './componnents/back_office/jobs/admin-crud-job-offers/admin-crud-job-offers.component';
 import { AdminDashlistapplicationsComponent } from './componnents/back_office/jobs/admin-dashlistapplications/admin-dashlistapplications.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { ScheduleinterviewadminComponent } from './componnents/back_office/jobs/scheduleinterviewadmin/scheduleinterviewadmin.component';
+import { ScheduleInterviewCandidateComponent } from './componnents/back_office/jobs/schedule-interview-candidate/schedule-interview-candidate.component';
+import { LoginComponent } from './componnents/front_office/user/authComponents/login/login.component';
+import { ProfileComponent } from './componnents/front_office/user/profile/profile.component';
+import { ProfileUpdateComponent } from './componnents/front_office/user/profile-update/profile-update.component';
+import { ResetpasswordComponent } from './componnents/front_office/user/authComponents/resetpassword/resetpassword.component';
+import { ForgetpasswordComponent } from './componnents/front_office/user/authComponents/forgetpassword/forgetpassword.component';
+import { RegisterComponent } from './componnents/front_office/user/authComponents/register/register.component';
 
 
 @NgModule({
@@ -40,6 +49,15 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     ApplyJobComponent,
     AdminCrudJobOffersComponent,
     AdminDashlistapplicationsComponent,
+    ScheduleinterviewadminComponent,
+    ScheduleInterviewCandidateComponent,
+    LoginComponent,
+    ProfileComponent,
+    ProfileUpdateComponent,
+    ResetpasswordComponent,
+    ForgetpasswordComponent,
+    RegisterComponent
+
     
 
 
@@ -52,7 +70,9 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgxSliderModule
+    NgxSliderModule,
+    FullCalendarModule,
+
 
 
   ],

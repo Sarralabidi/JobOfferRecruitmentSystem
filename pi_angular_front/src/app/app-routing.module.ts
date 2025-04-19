@@ -12,9 +12,20 @@ import { AdminCrudJobOffersComponent } from './componnents/back_office/jobs/admi
 import { AdminDashlistapplicationsComponent } from './componnents/back_office/jobs/admin-dashlistapplications/admin-dashlistapplications.component';
 import { ApplyJobComponent } from './componnents/front_office/jobs/apply-job/apply-job.component';
 import { ListJobOffersComponent } from './componnents/front_office/jobs/list-job-offers/list-job-offers.component';
+import { LoginComponent } from './componnents/front_office/user/authComponents/login/login.component';
+import { ForgetpasswordComponent } from './componnents/front_office/user/authComponents/forgetpassword/forgetpassword.component';
+import { NotAuthorizedComponent } from './componnents/front_office/user/authComponents/not-authorized/not-authorized.component';
+import { RegisterComponent } from './componnents/front_office/user/authComponents/register/register.component';
+import { ResetpasswordComponent } from './componnents/front_office/user/authComponents/resetpassword/resetpassword.component';
+import { guestGuard } from './componnents/front_office/user/guards/guest.guard';
+import { roleGuard } from './componnents/front_office/user/guards/role.guard';
+import { ProfileUpdateComponent } from './componnents/front_office/user/profile-update/profile-update.component';
+import { ProfileComponent } from './componnents/front_office/user/profile/profile.component';
 
 const routes: Routes = [
-    {path : '', component : HomeComponent},
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+    {path : 'Home', component : HomeComponent},
     {path : 'Back', component : HeaderBackComponent},
   { path: 'categories', component: EventCategoryComponent },
   { path: 'events', component: EventComponent },
@@ -26,6 +37,21 @@ const routes: Routes = [
   { path: 'applyjob/:id/:title', component: ApplyJobComponent },
   {path:'admin/applications',component:AdminDashlistapplicationsComponent},
   {path:'admin/offers',component:AdminCrudJobOffersComponent},
+  { path: 'login',
+    component: LoginComponent,
+    canActivate: [guestGuard]
+  },
+  { path: 'register',
+    component: RegisterComponent,
+    canActivate: [guestGuard]
+
+  },
+  { path: 'forgot-password', component: ForgetpasswordComponent },
+  { path: 'reset-password', component: ResetpasswordComponent },
+
+  { path: 'not-authorized', component: NotAuthorizedComponent },
+  { path: 'profile-update', component: ProfileUpdateComponent },
+  { path: 'profile/:username', component: ProfileComponent }
 
 ];
 

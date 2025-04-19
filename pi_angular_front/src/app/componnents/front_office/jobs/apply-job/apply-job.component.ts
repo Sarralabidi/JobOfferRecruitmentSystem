@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { JobApplicationService } from 'src/app/services/jobs/job-application.service';
+import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
   selector: 'app-apply-job',
@@ -17,7 +18,8 @@ export class ApplyJobComponent {
   status: string | undefined; 
   applicationDate: Date | undefined;
 
-  
+  username!: string | null;
+  email!: string | null;
   @Input() jobTitle: string = '';
   @Input() jobOfferId!: number;
   @Output() closeModal = new EventEmitter<void>();
@@ -27,19 +29,26 @@ export class ApplyJobComponent {
     private route: ActivatedRoute,
     private jobApplicationService: JobApplicationService,
     private router: Router,
-    private fb: FormBuilder
-  ) {
+    private fb: FormBuilder,
+    private authService: AuthService) {
+
+
     this.jobForm = this.fb.group({
       fullName: [''],
       email: [''],
       coverLetter: ['']
-    });
+   });
+
     // Form for adding a new job offer
-         this.jobForm = new FormGroup({ title: new FormControl('',
+        this.jobForm = new FormGroup({ title: new FormControl('',
            [ Validators.required, Validators.minLength(4) ]),
            fullName: new FormControl('', [Validators.required]), 
            email: new FormControl('', [ Validators.required ,Validators.email]), 
+  
            coverLetter: new FormControl('', Validators.required)});
+
+
+       
         
   }
 
@@ -48,8 +57,15 @@ export class ApplyJobComponent {
     this.jobTitle = this.route.snapshot.paramMap.get('title')!;
     console.log('Job Offer ID:', this.jobOfferId);    console.log(this.jobOfferId);
     console.log(this.jobTitle);
-   
-
+    this.username = this.authService.getCurrentUserUsername();
+    this.email = this.authService.getToken() ? this.authService['jwtHelper'].decodeToken(this.authService.getToken()!)?.email : null;   
+    console.log(this.username);
+    
+ // ✅ Auto-fill values into the form
+ this.jobForm.patchValue({
+  fullName: this.username,
+  email: this.email
+});
   }
 
   // Handle file selection

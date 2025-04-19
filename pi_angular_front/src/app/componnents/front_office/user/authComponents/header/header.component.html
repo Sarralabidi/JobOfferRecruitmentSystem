@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <!-- Logo on the left -->
+    <a class="navbar-brand" href="#">
+      <img src="assets/static_assets/dark_logo.png" alt="Logo" class="navbar-logo">
+    </a>
+
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links in the middle -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#" routerLink="/login" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" routerLink="/" routerLinkActive="active">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" routerLink="/" routerLinkActive="active">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" routerLink="/" routerLinkActive="active">Contact</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Login/Register or Profile -->
+    <div class="d-flex">
+      <!-- If not logged in -->
+      <button class="btn-login" type="button" *ngIf="!isLoggedIn" routerLink="/login">Login</button>
+      <button class="btn-register" type="button" *ngIf="!isLoggedIn" routerLink="/register">Register</button>
+
+      <!-- If logged in -->
+      <div *ngIf="isLoggedIn" class="d-flex align-items-center position-relative">
+        <!-- Profile Photo -->
+        <img
+          [src]="userPhotoUrl ? userPhotoUrl : 'assets/static_assets/user.png'"
+          alt="User Photo"
+          class="rounded-circle me-2"
+          width="40"
+          height="40"
+          (click)="toggleDropdown()"
+          style="cursor: pointer;">
+
+        <!-- Dropdown -->
+        <div *ngIf="isDropdownOpen"
+             class="position-absolute bg-white shadow rounded p-3"
+             style="top: 50px; right: 0; min-width: 200px; z-index: 1000;">
+
+          <!-- User Info -->
+          <div class="mb-2">
+            <span class="fw-bold d-block">{{ username }}</span>
+            <span class="text-muted small">{{ role }}</span>
+          </div>
+
+          <hr class="my-2">
+          
+          <!-- Edit Profile -->
+          <a class="dropdown-item text-start w-100 btn btn-sm mb-1"
+             routerLink="/profile-update">
+            Edit Profile
+          </a>
+
+          <!-- Logout -->
+          <button class="dropdown-item text-start w-100 btn btn-sm btn-outline-danger"
+                  (click)="logout()">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
