@@ -15,7 +15,9 @@ public class JobApplication {
     private JobOffer jobOffer;
 
     private Long userId;
+    @Column(name = "application_date")
     private Date applicationDate;
+    @Column(name = "status")
     private String status; // Pending, Accepted, Rejected
 
     private double matchPercentage; // 🔹 New field
@@ -72,10 +74,13 @@ public class JobApplication {
         this.cvFile = cvFile;
     }
 
-    public void setStatus(String pending) {
+    public void setStatus(String status) {
+        this.status = status;
+
     }
 
     public void setApplicationDate(Date date) {
+        this.applicationDate = date;
     }
 
     public JobOffer getJobOffer() {

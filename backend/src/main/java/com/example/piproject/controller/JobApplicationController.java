@@ -1,11 +1,14 @@
 package com.example.piproject.controller;
 
+import com.example.piproject.DTO.InterviewAvailabilityDTO;
 import com.example.piproject.DataExtraction.CVParser;
 import com.example.piproject.DataExtraction.JobMatchingService;
 import com.example.piproject.entity.JobApplication;
 import com.example.piproject.entity.JobOffer;
 import com.example.piproject.repository.JobOfferRepository;
 import com.example.piproject.services.ApplicationService;
+import com.example.piproject.services.EmailService;
+import com.example.piproject.services.MailerSendService;
 import com.example.piproject.services.OfferService;
 import org.apache.tika.exception.TikaException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import java.util.Date;
-import java.util.List;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/applications")
@@ -38,7 +39,10 @@ public class JobApplicationController {
     private OfferService jobService;
     @Autowired
     JobOfferRepository jobRepository;
-
+    @Autowired
+    EmailService emailService;
+    @Autowired
+    private MailerSendService mailerSendService;
     public JobApplicationController(ApplicationService jobApplicationService) {
         this.jobApplicationService = jobApplicationService;
     }
@@ -181,11 +185,41 @@ public class JobApplicationController {
     public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody Map<String, String> request) {
         String status = request.get("status");
         jobApplicationService.updateStatus(id, status);
+        System.out.println("job app"+id+"status updated to "+status);
         return ResponseEntity.ok().build();
     }
 
 
 
+
+        @PostMapping("/confirm-slot")
+        public ResponseEntity<Map<String, String>> confirmSlot(@RequestBody InterviewAvailabilityDTO request) {
+            String email = request.getCandidateEmail();
+            List<String> selectedSlot = request.getSlots();
+            System.out.println("Payload received -> email: " + email + " slots: " + selectedSlot);
+            System.out.println("DTO raw -> " + request);
+            System.out.println("Saving confirmed slot for " + email + " at " + selectedSlot);
+            String subject = "Interview Slot Confirmed";
+            String body = "Hello,\n\nYour interview slot is confirmed for: " + selectedSlot + "\n\nBest of luck!";
+
+            // ✅ Convert String dates to ZonedDateTime
+            List<ZonedDateTime> convertedSlots = selectedSlot.stream()
+                    .map(ZonedDateTime::parse)
+                    .collect(Collectors.toList());
+
+            System.out.println("✅ Converted slots: " + convertedSlots);
+
+            // ✉️ Send email with .ics attached
+            try {
+                emailService.sendInterviewInviteWithICS(email, convertedSlots);
+            } catch (Exception e) {
+                System.out.println("❌ Failed to send email: " + e.getMessage());
+                return ResponseEntity.status(500)
+                        .body(Collections.singletonMap("message", "Failed to send email with calendar invite."));
+            }
+
+            return ResponseEntity.ok(Collections.singletonMap("message", "Interview slot confirmed and email sent!"));
+        }
 
 
 }

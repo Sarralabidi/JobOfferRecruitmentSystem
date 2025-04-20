@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-scheduleinterviewadmin',
   templateUrl: './scheduleinterviewadmin.component.html',
@@ -12,6 +13,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 export class ScheduleinterviewadminComponent {
   @Output() closeModal = new EventEmitter<void>();
   @Output() slotsSelected = new EventEmitter<any[]>();
+  @Input() candidateEmail!: string;
 
   selectedSlots: any[] = [];
   selectedEvents: any[] = [];
@@ -34,20 +36,57 @@ export class ScheduleinterviewadminComponent {
     }
     
   };
+ constructor(private http: HttpClient
 
+  ){}
+  
   submitSlots() {
-    this.slotsSelected.emit(this.selectedSlots);
-    this.closeModal.emit();
+    const payload = {
+      candidateEmail: this.candidateEmail,
+      slots: this.selectedSlots.map(slot => {
+        const localDate = new Date(slot.start);
+        const adjusted = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000); // Fix timezone shift
+        return adjusted.toISOString();
+      })          };
+    console.log("Payload being sent:", payload);
+    this.http.post('http://localhost:9090/api/applications/confirm-slot', payload, { observe: 'response' })
+    .subscribe({
+      next: (response) => {
+        if (response.status === 200) {
+          alert('✅ Slots sent and email delivered to candidate!');
+          this.slotsSelected.emit(this.selectedSlots); // Emit slots
+          this.closeModal.emit(); // Close modal
+        } else {
+          alert(`⚠️ Server responded with status ${response.status}`);
+        }
+      },
+      error: (error: any) => {
+        console.error('❌ Error occurred while confirming slot:', error);
+        const errorMsg = error?.error?.message || 'Something went wrong. Please try again.';
+        alert(`❌ Failed to send slots.\n${errorMsg}`);
+      }
+    });
+  
   }
-
+  
   cancel() {
     this.closeModal.emit();
   }
 
   
+
+
 handleDateSelect(selectInfo: any) {
   const calendarApi = selectInfo.view.calendar;
-  calendarApi.unselect(); // Clear selection visually
+  calendarApi.unselect();
+
+  const newSlot = {
+    start: selectInfo.start,
+    end: selectInfo.end,
+    allDay: selectInfo.allDay
+  };
+
+  this.selectedSlots = [...this.selectedSlots, newSlot];
 
   const newEvent = {
     title: 'Available',
@@ -57,13 +96,10 @@ handleDateSelect(selectInfo: any) {
   };
 
   this.selectedEvents = [...this.selectedEvents, newEvent];
-
-  // Refresh calendar with updated events
   calendarApi.addEvent(newEvent);
 
-  console.log('Selected slots:', this.selectedEvents);
+  console.log('✅ Selected slots:', this.selectedSlots);
 }
-
 
 
 }

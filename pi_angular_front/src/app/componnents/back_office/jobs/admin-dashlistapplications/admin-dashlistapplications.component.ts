@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { JobApplicationService } from 'src/app/services/jobs/job-application.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -11,9 +11,7 @@ import { JobOfferService } from 'src/app/services/jobs/job-offer.service';
   styleUrls: ['./admin-dashlistapplications.component.css']
 })
 export class AdminDashlistapplicationsComponent {
-scheduleinterview() {
-throw new Error('Method not implemented.');
-}
+
 
 
   jobApplications: any[] = [];
@@ -43,20 +41,18 @@ totalPages: number[] = [];
 
   }
 
-  onStatusChange(application: any, newStatus: string): void {
-    if (application.status !== newStatus) {
-      application.status = newStatus;
-      this.jobApplicationService.updateApplicationStatus(application.id, newStatus).subscribe({
-        next: () => {
-          console.log(`Status updated to ${newStatus}`);
-          // Optionally trigger a toast or UI update here
-        },
-        error: err => {
-          console.error('Failed to update status', err);
-        }
-      });
-    }
+  onStatusChange(application: any): void {
+    this.jobApplicationService.updateApplicationStatus(application.id, application.status).subscribe({
+      next: () => {
+        console.log(`Status updated to ${application.status}`);
+        // You can add a success notification here if you want!
+      },
+      error: err => {
+        console.error('Failed to update status', err);
+      }
+    });
   }
+  
   
   
 // i aded those 2 methods
@@ -123,8 +119,14 @@ viewCV(id: number): void {
 }
 
 
-scheduleInterview() {
+selectedCandidateEmail: string = '';
+//here we are passing the email to the scheduleinterviewadmin
+
+scheduleInterview(email: string) {
+  this.selectedCandidateEmail = email;
+
   this.showScheduleModal = true;
+  console.log("the email is,",this.selectedCandidateEmail);
 }
 
 closeScheduleModal() {

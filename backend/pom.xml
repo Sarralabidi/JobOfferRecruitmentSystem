@@ -135,8 +135,23 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
+            <dependency>
+                <groupId>jakarta.mail</groupId>
+                <artifactId>jakarta.mail-api</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.angus</groupId>
+                <artifactId>angus-mail</artifactId>
+                <version>2.0.1</version>
+                <scope>runtime</scope>
+            </dependency>
 
-
+        <dependency>
+            <groupId>com.mailersend</groupId>
+            <artifactId>java-sdk</artifactId>
+            <version>1.0.1</version>
+        </dependency>
 
 
 

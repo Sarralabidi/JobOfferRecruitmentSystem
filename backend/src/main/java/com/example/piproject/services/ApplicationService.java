@@ -64,6 +64,9 @@ import java.util.Optional;
 
         application.setStatus(status);
         applicationRepository.save(application);
+        JobApplication saved = applicationRepository.findById(id).orElse(null);
+        System.out.println("From DB after save: " + (saved != null ? saved.getStatus() : "null"));
+
     }
 
 

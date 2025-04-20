@@ -71,4 +71,21 @@ table {
   .pagination-container {
     margin-top: 20px;
   }
+  .schedule-btn {
+    background-color: #f69a38; /* blue-600 */
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .schedule-btn:hover {
+    background-color: #1e40af; /* blue-800 */
+    transform: translateY(-2px);
+  }
   

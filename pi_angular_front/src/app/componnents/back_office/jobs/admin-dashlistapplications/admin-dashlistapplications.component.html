@@ -89,15 +89,16 @@
                       <td>{{ application.fullName }}</td>
                       <td>{{ application.email }}</td>
                       <td>
-                        <select class="form-select form-select-sm"
-                                [ngModel]="application.status || 'Pending'"
-                                (ngModelChange)="onStatusChange(application, $event)">
+                        <select
+                          class="form-select form-select-sm"
+                          [(ngModel)]="application.status"
+                          (change)="onStatusChange(application)">
                           <option value="Pending">Pending</option>
                           <option value="Accepted">Accepted</option>
                           <option value="Rejected">Rejected</option>
                         </select>
                       </td>
-                       
+                      
                       <td [ngStyle]="{
                             'background-color': getMatchScoreColor(application.matchPercentage),
                             'color': application.matchPercentage < 50 ? 'white' : 'black',
@@ -110,7 +111,7 @@
                         👁️
                       </button></td>
 
-                      <td>   <button (click)="scheduleInterview()" title="Schedule Interview">Schedule Interview</button>
+                      <td>   <button class="schedule-btn" (click)="scheduleInterview(application?.email)" title="Schedule Interview">Schedule Interview</button>
                       </td>
 
                     </tr>
@@ -119,6 +120,7 @@
               </div>
             <app-scheduleinterviewadmin *ngIf="showScheduleModal"
               (closeModal)="closeScheduleModal()"
+              [candidateEmail]="selectedCandidateEmail"
               (slotsSelected)="handleAdminSlots($event)"></app-scheduleinterviewadmin>
 
 
