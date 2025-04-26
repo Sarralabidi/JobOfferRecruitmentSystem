@@ -22,6 +22,7 @@ import { roleGuard } from './componnents/front_office/user/guards/role.guard';
 import { ProfileUpdateComponent } from './componnents/front_office/user/profile-update/profile-update.component';
 import { ProfileComponent } from './componnents/front_office/user/profile/profile.component';
 import { ScheduleInterviewCandidateComponent } from './componnents/back_office/jobs/schedule-interview-candidate/schedule-interview-candidate.component';
+import { AdminStatsComponent } from './componnents/back_office/jobs/admin-stats/admin-stats.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -39,6 +40,9 @@ const routes: Routes = [
   {path:'admin/applications',component:AdminDashlistapplicationsComponent},
   {path:'admin/offers',component:AdminCrudJobOffersComponent},
   {path:'candidat/comfirm',component:ScheduleInterviewCandidateComponent},
+  
+  {path:'admin/stat',component:AdminStatsComponent},
+
 
   { path: 'login',
     component: LoginComponent,

@@ -20,19 +20,19 @@ table {
   }
   
   .match-score.green {
-    background-color: #28a745 !important; /* Green */
+    background-color: #00ef38 !important; /* Green */
     color: white;
     font-weight: bold;
   }
   
   .match-score.orange {
-    background-color: #ffc107 !important; /* Orange */
+    background-color: #fdc221 !important; /* Orange */
     color: black;
     font-weight: bold;
   }
   
   .match-score.red {
-    background-color: #dc3545; /* Red */
+    background-color: #ff1f0f; /* Red */
     color: white;
     font-weight: bold;
   }
@@ -85,7 +85,7 @@ table {
   }
   
   .schedule-btn:hover {
-    background-color: #1e40af; /* blue-800 */
+    background-color: #efdbc6; /* blue-800 */
     transform: translateY(-2px);
   }
   

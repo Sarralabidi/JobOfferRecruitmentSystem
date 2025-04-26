@@ -15,20 +15,29 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  login() {
+
+
+  login(): void {
     this.errorMessage = '';
-
-    this.authService.login(this.username, this.password).subscribe(
-      (response: AuthResponseDTO) => {
+  
+    this.authService.login(this.username, this.password).subscribe({
+      next: (response: AuthResponseDTO) => {
         this.authService.saveToken(response.token);
-
-        this.router.navigate(['/Home']);
+  
+        const role = this.authService.getRole();
+        if (role === 'USER') {
+          this.router.navigate(['/Home']);
+        } else {
+          this.router.navigate(['/Back']);
+        }
       },
-      error => {
+      error: () => {
         this.errorMessage = 'Login failed! Check your credentials.';
       }
-    );
+    });
   }
+
+
 
   loginWithGitHub() {
     window.location.href = 'http://localhost:9090/project_war_exploded/oauth2/authorization/github';

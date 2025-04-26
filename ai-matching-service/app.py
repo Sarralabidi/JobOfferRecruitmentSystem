@@ -1,7 +1,9 @@
+from statistics import LinearRegression
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sentence_transformers import SentenceTransformer, util
-
+from sklearn.linear_model import LinearRegression
+import numpy as np
 app = Flask(__name__)
 
 # 🧠 Load SBERT model
@@ -82,6 +84,43 @@ def recommend_jobs():
 
     print("📢 Filtered jobs:", filtered_jobs)  # Debug log on Flask side
     return jsonify({"recommended_jobs": filtered_jobs})
+
+
+
+
+
+
+
+@app.route('/predict_growth', methods=['POST'])
+def predict_growth():
+    data = request.get_json()
+
+    applications = data.get('applications')
+    if applications is None or len(applications) == 0:
+        return jsonify({'error': "Missing or empty 'applications' data"}), 400
+
+    counts = np.array([app['count'] for app in applications])
+
+    if len(counts) < 2:
+        return jsonify({'error': "Not enough data to predict"}), 400
+
+    # --------- SMARTER PREDICTION ----------
+    # Calculate a moving average of the last 7 days
+    window_size = min(7, len(counts))  # if less than 7 points, adjust
+    moving_avg = np.mean(counts[-window_size:])
+
+    future_predictions = []
+    for i in range(1, 8):
+        # simulate a slight growth, e.g., +2% every day
+        predicted = moving_avg * (1 + 0.02 * i)
+        future_predictions.append({
+            'day_offset': i,
+            'predicted_count': int(predicted)  # or float(predicted) if you prefer decimals
+        })
+
+    return jsonify({'future_predictions': future_predictions})
+
+
 
 
 if __name__ == '__main__':

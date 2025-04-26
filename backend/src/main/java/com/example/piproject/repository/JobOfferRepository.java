@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
         @Query("SELECT j.description FROM JobOffer j WHERE j.id = :jobOfferId")
         String findJobOfferDescriptionById(@Param("jobOfferId") Long jobOfferId);
+
+        Object countAllByStatusIsLike(String status);
     }
 
 

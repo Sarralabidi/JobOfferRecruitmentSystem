@@ -51,4 +51,15 @@ public class OfferService {
     }
 
 
+    public Integer countAll() {
+        return (int) jobOfferRepository.count();
+
+    }
+
+
+    public Object countByStatus(String ch) {
+        return jobOfferRepository.countAllByStatusIsLike(ch);
+    }
+
+
 }

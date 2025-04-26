@@ -41,9 +41,23 @@ export class ListJobOffersComponent {
 
   fetchJobOffers(): void {
     this.jobOfferService.getJobOffers().subscribe((data: JobOffer[]) => {
-      this.jobOffers = data;
+      this.jobOffers = data;//was this only
       //this.applyFilters(); // initialize filtered list new added
       console.log(this.jobOffers);
+      // added :
+      this.filteredOffers = [...this.jobOffers]; // initially, all offers
+
+      // Dynamically set min and max based on data
+      const salaries = this.jobOffers.map(o => parseFloat(o.remuneration?.toString() ?? '0'));
+      this.minValue = Math.min(...salaries);
+      this.maxValue = Math.max(...salaries);
+  
+      this.options = {
+        floor: this.minValue,
+        ceil: this.maxValue
+      };
+
+
     });
   }
 
@@ -118,6 +132,9 @@ applyFilters() {
 
     return matchesLocation && matchesType && matchesSalaryRange;
   });
+
+
+
 }
 
 

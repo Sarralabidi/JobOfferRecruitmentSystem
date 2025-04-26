@@ -53,20 +53,21 @@
 <!-- filters -->
 <div class="filters-container classy-filters">
   <div class="row align-items-center gx-2">
-    <!-- Location Filter -->
-    <div class="col-md-4">
-      <input type="text" class="form-control form-control-sm" placeholder="Location..." [(ngModel)]="locationFilter" (ngModelChange)="applyFilters()" />
-    </div>
+  <!-- Location Filter -->
+<select class="form-select form-select-sm" [(ngModel)]="locationFilter" (ngModelChange)="applyFilters()">
+  <option value="">All Locations</option>
+  <option value="Remote">Remote</option>
+  <option value="On-site">On-site</option>
+  <option value="Hybrid">Hybrid</option>
+</select>
 
-    <!-- Type Filter -->
-    <div class="col-md-3">
-      <select class="form-select form-select-sm" [(ngModel)]="typeFilter" (ngModelChange)="applyFilters()">
-        <option value="">All Types</option>
-        <option value="On-Site">On-Site</option>
-        <option value="Hybrid">Hybrid</option>
-        <option value="Remote">Remote</option>
-      </select>
-    </div>
+<!-- Contract Type Filter -->
+<select class="form-select form-select-sm" [(ngModel)]="typeFilter" (ngModelChange)="applyFilters()">
+  <option value="">All Contract Types</option>
+  <option value="CDI">CDI</option>
+  <option value="CDD">CDD</option>
+</select>
+
 
     <!-- Salary Range -->
     <div class="col-md-5">

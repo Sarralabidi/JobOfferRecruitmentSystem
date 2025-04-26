@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { JobOffer } from 'src/app/models/jobs/JobOffer';
 import { JobOfferService } from 'src/app/services/jobs/job-offer.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-admin-crud-job-offers',
@@ -18,9 +19,15 @@ export class AdminCrudJobOffersComponent implements OnInit {
  jobForm: FormGroup;
  editJobForm!: FormGroup;
 
+  
+// Add these variables:
+currentPage: number = 1;
+itemsPerPage: number = 5; // Change as needed
+paginatedjobOffers: any[] = [];
+totalPages: number[] = [];
 
 
-  constructor(private jobOfferService: JobOfferService) {
+  constructor(private jobOfferService: JobOfferService,private cdRef: ChangeDetectorRef) {
     // Initialisation du formulaire avec FormGroup et FormControl
     const lettersOnly = Validators.pattern(/^[A-Za-zÀ-ÿ\s]+$/);
 
@@ -47,6 +54,10 @@ export class AdminCrudJobOffersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadJobOffers();
+    this.cdRef.detectChanges(); // Manually trigger change detection
+
+    this.updatePaginatedApplications();//added this
+
   }
 
 
@@ -59,6 +70,8 @@ export class AdminCrudJobOffersComponent implements OnInit {
   loadJobOffers(): void {
     this.jobOfferService.getJobOffers().subscribe((data) => {
       this.jobOffers = data;
+      this.updatePaginatedApplications();// i added this line
+
     });
   }
   // Add a job offer
@@ -121,5 +134,22 @@ export class AdminCrudJobOffersComponent implements OnInit {
 
   selectJobOffer(offer: JobOffer) {
     this.selectedOffer = { ...offer };
+  }
+
+
+
+  updatePaginatedApplications(): void {
+    const total = Math.ceil(this.jobOffers.length / this.itemsPerPage);
+    this.totalPages = Array.from({ length: total }, (_, i) => i + 1);
+
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginatedjobOffers = this.jobOffers.slice(start, end);
+  }
+  
+  changePage(page: number): void {
+    if (page < 1 || page > this.totalPages.length) return;
+    this.currentPage = page;
+    this.updatePaginatedApplications();
   }
 }

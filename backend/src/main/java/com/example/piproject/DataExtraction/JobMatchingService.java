@@ -9,6 +9,7 @@ import java.util.Map;
 public class JobMatchingService {
     private static final String FLASK_API_URL = "http://127.0.0.1:5000/match"; // Adjust if needed
     private static final String sFLASK_API_URL = "http://127.0.0.1:5000/recommend_jobs";
+    private static final String PREDICT_GROWTH_URL = "http://127.0.0.1:5000/predict_growth"; // New
 
 
     public static Map<String, Object> matchCVWithJob(String jobDescription, Map<String, String> extractedCVSections) {
@@ -50,5 +51,24 @@ public class JobMatchingService {
     }
 
 
+    public static Map<String, Object> predictGrowth(List<Map<String, Object>> applications) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Prepare request payload
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("applications", applications);
+
+        // Create request
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+
+        // Send request to Flask API
+        ResponseEntity<Map> response = restTemplate.exchange(
+                PREDICT_GROWTH_URL, HttpMethod.POST, request, Map.class
+        );
+
+        return response.getBody(); // Should return { future_predictions: [...] }
+    }
 
 }

@@ -5,6 +5,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { saveAs } from 'file-saver'; // make sure file-saver is installed
 import { JobOffer } from 'src/app/models/jobs/JobOffer';
 import { JobOfferService } from 'src/app/services/jobs/job-offer.service';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/user/auth.service';
 @Component({
   selector: 'app-admin-dashlistapplications',
   templateUrl: './admin-dashlistapplications.component.html',
@@ -17,6 +19,7 @@ export class AdminDashlistapplicationsComponent {
   jobApplications: any[] = [];
   showScheduleModal: boolean = false;
 
+  isDropdownOpen = false;
 
   
 // Add these variables:
@@ -25,9 +28,12 @@ itemsPerPage: number = 5; // Change as needed
 paginatedApplications: any[] = [];
 totalPages: number[] = [];
 
-
+isLoggedIn: boolean = false;
+username: string | null = null;
+role: string | null = null;
+userPhotoUrl: string | null = null;
   constructor(private jobApplicationService: JobApplicationService,private cdRef: ChangeDetectorRef,private sanitizer: DomSanitizer,private jobOfferService: 
-    JobOfferService
+    JobOfferService,private authService: AuthService, private router: Router
 
   ) {
 
@@ -38,9 +44,29 @@ totalPages: number[] = [];
     this.fetchJobApplications();
     this.cdRef.detectChanges(); // Manually trigger change detection
     this.updatePaginatedApplications();//added this
+    //for logging out
+    this.authService.authStatus$.subscribe((status: boolean) => {
+      this.isLoggedIn = status;
+      if (this.isLoggedIn) {
+        this.username = this.authService.getCurrentUserUsername();  // Replace with actual field in the token
+        this.role = this.authService.getRole();          // Replace with actual field in the token
+        this.userPhotoUrl = this.authService.getCurrentUserPicture();
+      }
+
+    });
 
   }
 
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.username = null;
+    this.role = null;
+    this.router.navigate(['/login']);
+  }
   onStatusChange(application: any): void {
     this.jobApplicationService.updateApplicationStatus(application.id, application.status).subscribe({
       next: () => {
@@ -93,11 +119,11 @@ totalPages: number[] = [];
 // Method to return the color based on match percentage
 getMatchScoreColor(matchPercentage: number): string {
   if (matchPercentage > 75) {
-    return '#28a745';  // Green
+    return '#00ef38';  // Green
   } else if (matchPercentage >= 50) {
-    return '#ffc107';  // Orange
+    return '#fdc221';  // Orange
   } else {
-    return '#dc3545';  // Red
+    return '#ff1f0f';  // Red
   }
 }
 viewCV(id: number): void {

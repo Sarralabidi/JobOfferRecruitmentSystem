@@ -30,8 +30,8 @@ import { ProfileUpdateComponent } from './componnents/front_office/user/profile-
 import { ResetpasswordComponent } from './componnents/front_office/user/authComponents/resetpassword/resetpassword.component';
 import { ForgetpasswordComponent } from './componnents/front_office/user/authComponents/forgetpassword/forgetpassword.component';
 import { RegisterComponent } from './componnents/front_office/user/authComponents/register/register.component';
-
-
+import { AdminStatsComponent } from './componnents/back_office/jobs/admin-stats/admin-stats.component';
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +56,8 @@ import { RegisterComponent } from './componnents/front_office/user/authComponent
     ProfileUpdateComponent,
     ResetpasswordComponent,
     ForgetpasswordComponent,
-    RegisterComponent
+    RegisterComponent,
+    AdminStatsComponent
 
     
 
@@ -72,8 +73,7 @@ import { RegisterComponent } from './componnents/front_office/user/authComponent
     ReactiveFormsModule,
     NgxSliderModule,
     FullCalendarModule,
-
-
+    NgChartsModule // ✅ Add this
 
   ],
   providers: [],
